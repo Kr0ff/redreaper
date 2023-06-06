@@ -7,8 +7,6 @@ import os
 import json
 import subprocess
 import shlex
-import re
-import fileinput
 
 from lib.ascii import *
 from lib.colours import *
