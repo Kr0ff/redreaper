@@ -49,7 +49,7 @@ def build_tf(cidr, projectName, ssh_pubkey, tf_file):
     _pubkey = gen_ssh_key(ssh_pubkey)
 
     print(_pubkey)
-    input()
+    #input()
 
     if Helpers.check_file_exists(ssh_pubkey) == False:
         print_error("File does not exist")
