@@ -18,14 +18,14 @@ provider "aws" {
 ###  Local variables with hard-coded values  ###
 ################################################
 locals {
-  ec2_instance_name    = "ec2_%INSTANCE_NAME%"            # %INSTANCE_NAME%    # EC2 Instance Name 
-  ec2_instance_key     = "%INSTANCE_NAME%-key"        # %INSTANCE_NAME% (suffix: -key)  # EC2 Instance SSH Key Pair Name
-  vpc_cidr_block       = "%CIDR_BLOCK%"               # %CIDR_BLOCK%  # CIDR Of The Redirectors' subnet
-  vpc_name             = "vpc_%INSTANCE_NAME%"                 # %VPC_NAME%  # Redirectors' VPC Name
-  subnet_name          = "subnet_%INSTANCE_NAME%"              # %SUBNET_NAME% # Redirectors' Subnet Name
-  secgrp_name          = "sg_%INSTANCE_NAME%"         # %SECURITYGRP_NAME% # Redirectors' Security Group Name
-  internetgateway_name = "ig_%INSTANCE_NAME%"     # %INTERNETGATEWAY_NAME% # Redirectors' Internet Gateway Name
-  routetable_name      = "rt_%INSTANCE_NAME%"          # %ROUTETABLE_NAME% # Redirectors' Route Table Name
+  ec2_instance_name    = "ec2_%INSTANCE_NAME%"        #  EC2 Instance Name 
+  ec2_instance_key     = "%INSTANCE_NAME%-key"        #  EC2 Instance SSH Key Pair Name (suffix: -key) 
+  vpc_cidr_block       = "%CIDR_BLOCK%"               #  CIDR Of The Redirectors' subnet
+  vpc_name             = "vpc_%INSTANCE_NAME%"        #  Redirectors' VPC Name
+  subnet_name          = "subnet_%INSTANCE_NAME%"     #  Redirectors' Subnet Name
+  secgrp_name          = "sg_%INSTANCE_NAME%"         #  Redirectors' Security Group Name
+  internetgateway_name = "ig_%INSTANCE_NAME%"         #  Redirectors' Internet Gateway Name
+  routetable_name      = "rt_%INSTANCE_NAME%"         #  Redirectors' Route Table Name
 }
 
 
@@ -38,6 +38,7 @@ resource "aws_vpc" "vpc_%INSTANCE_NAME%" {
 
   tags = {
     Name = "${local.vpc_name}"
+    comment = "Created with RedReaper"
   }
 }
 
@@ -49,6 +50,7 @@ resource "aws_subnet" "subnet_%INSTANCE_NAME%" {
   vpc_id                  = aws_vpc.vpc_%INSTANCE_NAME%.id
   tags = {
     Name = "${local.subnet_name}"
+    comment = "Created with RedReaper"
   }
 }
 
@@ -100,6 +102,7 @@ resource "aws_security_group" "sg_%INSTANCE_NAME%" {
 
   tags = {
     Name = "${local.secgrp_name}"
+    comment = "Created with RedReaper"
   }
 }
 
@@ -110,6 +113,7 @@ resource "aws_route_table" "rtb_%INSTANCE_NAME%" {
   vpc_id    = aws_vpc.vpc_%INSTANCE_NAME%.id
   tags = {
     Name = "rtb_redirectors"
+    comment = "Created with RedReaper"
   }
 }
 
@@ -136,6 +140,7 @@ resource "aws_internet_gateway" "ig_%INSTANCE_NAME%" {
   vpc_id = aws_vpc.vpc_%INSTANCE_NAME%.id
   tags = {
     Name = "${local.internetgateway_name}"
+    comment = "Created with RedReaper"
   }
 }
 
@@ -161,6 +166,7 @@ resource "aws_instance" "ec2_%INSTANCE_NAME%" {
 
   tags = {
     Name = "${local.ec2_instance_name}"
+    Comment = "Created with RedReaper"
   }
 }
 
