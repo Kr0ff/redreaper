@@ -1,6 +1,5 @@
-provider "aws" {
-  region = "us-east-1"
-}
+# Author: Kr0ff
+# Version: 1.0
 
 resource "aws_cloudfront_distribution" "cdn" {
   # Aliases arent required at this point.
@@ -19,9 +18,8 @@ resource "aws_cloudfront_distribution" "cdn" {
 
   origin {
 
-    domain_name = var.c2domain
-    #origin_access_control_id = aws_cloudfront_origin_access_control.default.id
-    origin_id = var.c2domain
+    domain_name = "%C2DOMAIN%"
+    origin_id = "%C2DOMAIN%"
 
     custom_origin_config {
       origin_protocol_policy = "https-only"
@@ -36,7 +34,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     min_ttl                = 0
     max_ttl                = 31536000
     default_ttl            = 86400
-    target_origin_id       = var.c2domain
+    target_origin_id       = "%C2DOMAIN%"
     cached_methods         = ["HEAD", "GET"]
     viewer_protocol_policy = "allow-all"
 
@@ -57,13 +55,9 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   viewer_certificate { cloudfront_default_certificate = true }
-  #  acm_certificate_arn            = aws_acm_certificate.certificate.id
-  # ssl_support_method             = "sni-only"
-  #  #cloudfront_default_certificate = true 
-  #}
 
   tags = {
-    Name = "${var.cdn_name}"
+    project = "%PROJECT_NAME%"
     comment = "Created with RedReaper"
   }
 

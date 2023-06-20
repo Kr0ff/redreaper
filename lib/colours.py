@@ -25,4 +25,4 @@ def print_warning(string):
 
 	s = f"{Fore.YELLOW}[!]{Style.RESET_ALL} {string}"
 
-	print(s) 
+	print(s)

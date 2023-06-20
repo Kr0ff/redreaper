@@ -1,27 +1,20 @@
-provider "aws" {
-  region = "us-east-1"
-}
+# Author: Kr0ff
+# Version: 1.0
 
 resource "aws_route53_zone" "r53hzone" {
-  name = "${var.c2domain}"
+  name = "%C2DOMAIN%"
   comment = "Created with RedReaper"
 }
 
 resource "aws_route53_record" "root" {
-  # for_each = {
-  #   for dvo in aws_acm_certificate.certificate.domain_validation_options : dvo.domain_name => {
-  #     name   = dvo.resource_record_name
-  #     record = dvo.resource_record_value
-  #     type   = dvo.resource_record_type
-  #   }
-  # }
 
   zone_id = aws_route53_zone.r53hzone.zone_id
   allow_overwrite = true
-  name    = "${var.c2domain}"
+  name    = "%C2DOMAIN%"
   type    = "A"
   ttl     = 300
-  records = ["${var.c2ip}"]
+  #records = ["%C2IPADDRESS%"]
+  records = ["${aws_instance.ec2_%PROJECT_NAME%.public_ip}"]
 
   depends_on = [ aws_route53_zone.r53hzone ]
 }

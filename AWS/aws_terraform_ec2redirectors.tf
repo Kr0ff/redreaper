@@ -38,6 +38,7 @@ resource "aws_vpc" "vpc_%INSTANCE_NAME%" {
 
   tags = {
     Name = "${local.vpc_name}"
+    project = "%INSTANCE_NAME%"
     comment = "Created with RedReaper"
   }
 }
@@ -50,6 +51,7 @@ resource "aws_subnet" "subnet_%INSTANCE_NAME%" {
   vpc_id                  = aws_vpc.vpc_%INSTANCE_NAME%.id
   tags = {
     Name = "${local.subnet_name}"
+    project = "%INSTANCE_NAME%"
     comment = "Created with RedReaper"
   }
 }
@@ -102,6 +104,7 @@ resource "aws_security_group" "sg_%INSTANCE_NAME%" {
 
   tags = {
     Name = "${local.secgrp_name}"
+    project = "%INSTANCE_NAME%"
     comment = "Created with RedReaper"
   }
 }
@@ -112,7 +115,8 @@ resource "aws_route_table" "rtb_%INSTANCE_NAME%" {
   #subnet_id = aws_subnet.subnet_redirectors.id
   vpc_id    = aws_vpc.vpc_%INSTANCE_NAME%.id
   tags = {
-    Name = "rtb_redirectors"
+    Name = "rtb_%INSTANCE_NAME%"
+    project = "%INSTANCE_NAME%"
     comment = "Created with RedReaper"
   }
 }
@@ -140,6 +144,7 @@ resource "aws_internet_gateway" "ig_%INSTANCE_NAME%" {
   vpc_id = aws_vpc.vpc_%INSTANCE_NAME%.id
   tags = {
     Name = "${local.internetgateway_name}"
+    project = "%INSTANCE_NAME%"
     comment = "Created with RedReaper"
   }
 }
@@ -166,6 +171,7 @@ resource "aws_instance" "ec2_%INSTANCE_NAME%" {
 
   tags = {
     Name = "${local.ec2_instance_name}"
+    project = "%INSTANCE_NAME%"
     Comment = "Created with RedReaper"
   }
 }
