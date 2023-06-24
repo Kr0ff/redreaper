@@ -1,12 +1,12 @@
 from lib.helpers import *
 
-class Builder:
+class AWSBuilder:
     
     def __init__(self):
         cidr = self.cidr
         projectName = self.projectName
         ssh_pubkey = self.ssh_pubkey
-        tf_file = self.tf_file
+        #tf_file = self.tf_file
         c2domain = self.c2domain
         c2ipaddress = self.c2ipaddress
 
@@ -16,7 +16,8 @@ class Builder:
         projectName, 
         ssh_pubkey, 
         c2domain, 
-        tf_file):
+        #tf_file
+        ):
 
         # https://stackoverflow.com/a/5475224
         SCRIPT_RELPATH = sys.path[0]
@@ -26,19 +27,19 @@ class Builder:
         else:
             pass
 
-        if Helpers.check_file_exists(f"{tf_file}") == False:
-            print_error(f"Terraform file \"{tf_file}\" does not exist")
-            sys.exit(-1)
+        # if Helpers.check_file_exists(f"{tf_file}") == False:
+        #     print_error(f"Terraform file \"{tf_file}\" does not exist")
+        #     sys.exit(-1)
 
-        print_info(f"Using \"{tf_file}\" to create environment")
+        #print_info(f"Using \"{tf_file}\" to create environment")
         
         # Prepare the EC2 redirector instance Terraform
-        def gen_ec2(cidr, projectName, ssh_pubkey, tf_file):
+        def gen_ec2(cidr, projectName, ssh_pubkey):
             # Create a new file in root of the project folder
             with open(f"{SCRIPT_RELPATH}/AWS/output/{projectName}-ec2redirector.tf", "a+") as TF_NEW:
 
                 # Open the template terraform file and replace values
-                with open(f"{tf_file}", "r") as TF_ORIG:
+                with open(f"{SCRIPT_RELPATH}/AWS/aws_terraform_ec2redirectors.tf", "r") as TF_ORIG:
                     
                     replaced_projectName = TF_ORIG.read().replace("%INSTANCE_NAME%", projectName)   # replace EC2 name with project name
                     replaced_cidr = replaced_projectName.replace("%CIDR_BLOCK%", cidr)              # from first replace (EC2), replace the CIDR block
@@ -80,7 +81,7 @@ class Builder:
                     replaced_projectName = TF_ORIG.read().replace("%PROJECT_NAME%", projectName)   # replace project name
                     replaced_c2domain = replaced_projectName.replace("%C2DOMAIN%", c2domain)       # from first replace (project name), replace the C2 domain
                     
-                    final = replaced_c2domain                                                   # store final and write to the new file
+                    final = replaced_c2domain                                                      # store final and write to the new file
                     
                     if TF_NEW.write(final):
                         return True
@@ -88,7 +89,7 @@ class Builder:
                         return False 
                         
         try:
-            if gen_ec2(cidr, projectName, ssh_pubkey, tf_file) == True:
+            if gen_ec2(cidr, projectName, ssh_pubkey) == True:
                 print_success(f"Successfully wrote EC2 Redirector Terraform file \"./AWS/output/{projectName}-ec2redirector.tf\"")
             
             if gen_cdn(c2domain, projectName) == True:
@@ -98,5 +99,6 @@ class Builder:
                 print_success(f"Successfully wrote Route53 Terraform file \"./AWS/output/{projectName}-r53.tf\"")
                 
             return True
+        
         except Exception as e:
             raise Exception(e)

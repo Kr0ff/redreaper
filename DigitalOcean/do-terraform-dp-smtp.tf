@@ -21,40 +21,41 @@ variable "do_token" {
 
 # Project Name = %PROJECT_NAME%
 # Droplet Instance = %INSTANCE_NAME%
-resource "digitalocean_ssh_key" "sshkey_project1" {
-  name       = "Project1"
-  public_key = ""
+# SSH pubkey = %SSH_PUBKEY%
+resource "digitalocean_ssh_key" "sshkey_%PROJECT_NAME%" {
+  name       = "ssh-%PROJECT_NAME%"
+  public_key = "%SSH_PUB_KEY%"
 }
 
 # s-1vcpu-2gb
 # lon1
 # ubuntu-22-04-x64
 # Create a new Web Droplet in the nyc2 region
-resource "digitalocean_droplet" "dp_project1" {
+resource "digitalocean_droplet" "dp_%PROJECT_NAME%" {
   image  = "ubuntu-22-04-x64"
-  name   = "smtp-01"
+  name   = "dp-smtp01-%PROJECT_NAME%"
   region = "lon1"
   size   = "s-1vcpu-2gb"
-  ssh_keys = [digitalocean_ssh_key.sshkey_project1.fingerprint]
+  ssh_keys = [digitalocean_ssh_key.sshkey_%PROJECT_NAME%.fingerprint]
 }   
 
 # Project Name = %PROJECT_NAME%
-resource "digitalocean_project" "project1" {
-  name        = "Project1"
+resource "digitalocean_project" "%PROJECT_NAME%" {
+  name        = "%PROJECT_NAME%"
   description = "Created by RedReaper"
-  purpose     = "Project1"
+  purpose     = "Assessment_%PROJECT_NAME%"
   environment = "Production"
-  resources   = [digitalocean_droplet.dp_project1.urn]
+  resources   = [digitalocean_droplet.dp_%PROJECT_NAME%.urn]
 
-  depends_on = [ digitalocean_droplet.dp_project1 ]
+  depends_on = [ digitalocean_droplet.dp_%PROJECT_NAME% ]
 }
 
 # Project Name = %PROJECT_NAME%
 # Droplet Instance = %INSTANCE_NAME%
-resource "digitalocean_firewall" "fw_project1" {
-  name = "fw-project1"
+resource "digitalocean_firewall" "fw_%PROJECT_NAME%" {
+  name = "fw-%PROJECT_NAME%"
 
-  droplet_ids = [digitalocean_droplet.dp_project1.id]
+  droplet_ids = [digitalocean_droplet.dp_%PROJECT_NAME%.id]
 
   inbound_rule {
     protocol         = "tcp"
@@ -86,27 +87,19 @@ resource "digitalocean_firewall" "fw_project1" {
   }
 
   outbound_rule {
-    protocol              = "tcp"
-    port_range            = "53"
-    destination_addresses = ["0.0.0.0/0", "::/0"]
-  }
-
-  outbound_rule {
-    protocol              = "udp"
-    port_range            = "53"
-    destination_addresses = ["0.0.0.0/0", "::/0"]
-  }
-
-  outbound_rule {
     protocol              = "icmp"
     destination_addresses = ["0.0.0.0/0", "::/0"]
   }
 
-  depends_on = [ digitalocean_droplet.dp_project1 ]
+  outbound_rule {
+    protocol              = "tcp"
+    port_range = "0"
+    destination_addresses = ["0.0.0.0/0", "::/0"]
+  }
+
+  depends_on = [ digitalocean_droplet.dp_%PROJECT_NAME% ]
 }
 
-
-
 output "Droplet_IPV4" {
-    value = digitalocean_droplet.dp_project1.ipv4_address
+    value = digitalocean_droplet.dp_%PROJECT_NAME%.ipv4_address
 }
