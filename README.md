@@ -9,3 +9,8 @@ Redreaper uses python3 to take some information regarding the infrastructure tha
 # Credits
 This tool was insipired by the various other tools that already exist out there. Some of which are mentioned below:
 - https://github.com/SecuraBV/RedWizard
+- https://github.com/guidepointsecurity/RedCommander
+- https://github.com/mantvydasb/Red-Team-Infrastructure-Automation
+
+# Disclaimer
+The author of this does not take any responsibility of how this tool is used. This was created for educational purposes only. Responsibility and usage of this tool fall strictly on the user's side.
