@@ -15,3 +15,15 @@ This tool was insipired by the various other tools that already exist out there.
 
 # Disclaimer
 The author of this does not take any responsibility of how this tool is used. This was created for educational purposes only. Responsibility and usage of this tool fall strictly on the user's side.
+
+
+# Legend
+
+* `ec2_instance_name    = "ec2_%INSTANCE_NAME%"`        #  EC2 Instance Name 
+* `ec2_instance_key     = "%INSTANCE_NAME%-key"`        #  EC2 Instance SSH Key Pair Name (suffix: -key) 
+* `vpc_cidr_block       = "%CIDR_BLOCK%"`               #  CIDR Of The Redirectors' subnet
+* `vpc_name             = "vpc_%INSTANCE_NAME%"`        #  Redirectors' VPC Name
+* `subnet_name          = "subnet_%INSTANCE_NAME%"`     #  Redirectors' Subnet Name
+* `secgrp_name          = "sg_%INSTANCE_NAME%"`         #  Redirectors' Security Group Name
+* `internetgateway_name = "ig_%INSTANCE_NAME%"`         #  Redirectors' Internet Gateway Name
+* `routetable_name      = "rt_%INSTANCE_NAME%"`         #  Redirectors' Route Table Name

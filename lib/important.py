@@ -14,8 +14,8 @@ fix the SOA/NS records to point to Route53.
 
 Some additional minor setup is required for the CDN
 such as:
-    - certificate, 
-    - origin, 
+    - certificate
+    - origin
     - alternate domain names = [<C2 DOMAIN>.com ,www.<C2 DOMAIN>.com]
     
 or others. Remember to double check the setup after deployment.

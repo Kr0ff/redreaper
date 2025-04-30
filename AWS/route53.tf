@@ -1,14 +1,14 @@
 # Author: Kr0ff
 # Version: 1.0
 
-resource "aws_route53_zone" "r53hzone" {
+resource "aws_route53_zone" "r53hzone_%PROJECT_NAME%" {
   name = "%C2DOMAIN%"
   comment = "Created with RedReaper"
 }
 
-resource "aws_route53_record" "root" {
+resource "aws_route53_record" "root_%PROJECT_NAME%" {
 
-  zone_id = aws_route53_zone.r53hzone.zone_id
+  zone_id = aws_route53_zone.r53hzone_%PROJECT_NAME%.zone_id
   allow_overwrite = true
   name    = "%C2DOMAIN%"
   type    = "A"
@@ -16,5 +16,5 @@ resource "aws_route53_record" "root" {
   #records = ["%C2IPADDRESS%"]
   records = ["${aws_instance.ec2_%PROJECT_NAME%.public_ip}"]
 
-  depends_on = [ aws_route53_zone.r53hzone ]
+  depends_on = [ aws_route53_zone.r53hzone_%PROJECT_NAME% ]
 }
